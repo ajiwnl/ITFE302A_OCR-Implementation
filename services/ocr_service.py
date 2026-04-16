@@ -1,16 +1,30 @@
 import io
 import fitz  # PyMuPDF
+import requests
 import easyocr
 import numpy as np
 from PIL import Image
+
 
 # Initialize OCR once
 reader = easyocr.Reader(['en'], gpu=False)
 
 
-async def process_pdf(file):
+def download_pdf(url: str) -> bytes:
     try:
-        content = await file.read()
+        response = requests.get(url, timeout=30)
+        response.raise_for_status()
+        if "application/pdf" not in response.headers.get("Content-Type", "").lower():
+            # Check file extension as fallback
+            if not url.lower().endswith(".pdf"):
+                raise Exception("The provided URL does not point to a PDF file.")
+        return response.content
+    except Exception as e:
+        raise Exception(f"Failed to download PDF from URL: {str(e)}")
+
+
+async def process_pdf(content: bytes, filename: str):
+    try:
         pdf_document = fitz.open(stream=content, filetype="pdf")
 
         results = []
@@ -42,7 +56,7 @@ async def process_pdf(file):
         pdf_document.close()
 
         return {
-            "filename": file.filename,
+            "filename": filename,
             "total_pages": len(results),
             "pages": results
         }
@@ -51,9 +65,8 @@ async def process_pdf(file):
         raise Exception(f"OCR processing failed: {str(e)}")
 
 
-async def process_pdf_image_only(file):
+async def process_pdf_image_only(content: bytes, filename: str):
     try:
-        content = await file.read()
         pdf_document = fitz.open(stream=content, filetype="pdf")
 
         results = []
@@ -81,7 +94,7 @@ async def process_pdf_image_only(file):
         pdf_document.close()
 
         return {
-            "filename": file.filename,
+            "filename": filename,
             "total_pages": len(results),
             "pages": results
         }
