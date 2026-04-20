@@ -48,7 +48,7 @@ async def process_pdf(content: bytes, filename: str):
                 ocr_text_list = reader.readtext(img_np, detail=0)
                 text = " ".join(ocr_text_list)
 
-            results.append({
+            results.append({   
                 "page": page_num + 1,
                 "content": text
             })
