@@ -1,4 +1,4 @@
-# PDF OCR API
+# ITFE302A_OCR-Implementation PDF OCR API
 
 A lightweight FastAPI-based service for extracting text from PDF documents using a combination of PyMuPDF and EasyOCR. This API provides intelligent text extraction that first attempts direct text extraction from PDFs and falls back to OCR for image-based or scanned documents.
 
@@ -171,3 +171,4 @@ All errors return appropriate HTTP status codes with descriptive messages.
 ## License
 
 [Add license information here]
+# ITFE302A_OCR-Implementation
