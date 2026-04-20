@@ -167,8 +167,3 @@ All errors return appropriate HTTP status codes with descriptive messages.
 - OCR processing is computationally intensive and may take time for large or image-heavy PDFs
 - The service uses CPU-based OCR (gpu=False) for broader compatibility
 - Consider the `/ocr/extract-image` endpoint only when you know the PDF contains scanned images
-
-## License
-
-[Add license information here]
-# ITFE302A_OCR-Implementation
